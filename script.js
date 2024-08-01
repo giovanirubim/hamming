@@ -84,9 +84,65 @@ const encodedLengthToParityCount = (n) => {
 	return sum;
 };
 
+const solveEncoding = () => {
+	const textBits = document.querySelector('#data_bits').value.trim();
+	if (!/^[10]+$/.test(textBits)) {
+		document.querySelector('#encoding').innerHTML = '';
+		return;
+	}
+	const parity = Number(document.querySelector('#parity_decoding').value);
+	const data = textBits.split('').map(Number);
+	let html = '';
+	html += '<h3>Inclusão dos bits de paridade</h3>';
+	const bits = [];
+	for (let i=0; i<data.length;) {
+		if (isPowerOfTwo(bits.length + 1)) {
+			bits.push(0);
+			html += ` _ `;
+		} else {
+			html += data[i];
+			bits.push(data[i]);
+			i += 1;
+		}
+	}
+	for (let p=1; p<=bits.length; ++p) {
+		if (!isPowerOfTwo(p)) {
+			continue;
+		}
+		html += `<h3>Cálculo do bit de paridade ${p}</h3>`;
+		html += `<p>`;
+		let sum = 0;
+		for (let i=1; i<=bits.length; ++i) {
+			const bit = bits[i - 1];
+			if (i === p) {
+				html += `[_]`;
+			} else if (!isPowerOfTwo(i)) {
+				if ((p & i) === 0) {
+					html += `<span class="ignored">${bit}</span>`;
+				} else {
+					sum += bit;
+					const name = ['zero', 'one'][bit];
+					html += `<span class="counted ${name}">${bit}</span>`;
+				}
+			} else if (i < p) {
+				html += bit;
+			} else {
+				html += '<span class="ignored">?</span>';
+			}
+		}
+		html += `</p>`;
+		const parityBit = ((sum & 1) === parity)|0;
+		html += `<p>Total de bits uns: <b>${sum}</b>. Bit de paridade: <b>${parityBit}</b></p>`;
+		bits[p - 1] = parityBit;
+	}
+	html += `<p>Código de hamming: <b>${bits.join('')}</b></p>`;
+	document.querySelector('#encoding').innerHTML = html;
+};
+
 const solveDecoding = () => {
 	const textBits = document.querySelector('#code_bits').value.trim();
 	if (!/^[10]+$/.test(textBits)) {
+		document.querySelector('#decoding').innerHTML = '';
 		return;
 	}
 	const bits = textBits.split('').map(Number);
@@ -173,12 +229,15 @@ const solveDecoding = () => {
 };
 
 document.querySelector('#generate_quiz').addEventListener('click', () => {
-	// if (Math.random() > 0.5) {
-	// 	generateEncodingQuiz();
-	// } else {
-	generateDecodingQuiz();
-	// }
+	if (Math.random() > 0.5) {
+		generateEncodingQuiz();
+	} else {
+		generateDecodingQuiz();
+	}
 });
+
+document.querySelector('#data_bits').addEventListener('input', solveEncoding);
+document.querySelector('#parity_encoding').addEventListener('input', solveEncoding);
 
 document.querySelector('#code_bits').addEventListener('input', solveDecoding);
 document.querySelector('#parity_decoding').addEventListener('input', solveDecoding);
