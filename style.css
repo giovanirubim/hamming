@@ -1,0 +1,56 @@
+body {
+	background-color: #222;
+	color: #ccc;
+	font-family: monospace;
+	margin: 20px;
+}
+
+p {
+	color: #bbb;
+}
+
+p b {
+	color: #eee;
+}
+
+input[type="button"] {
+	background-color: #444;
+	border: none;
+	color: #ccc;
+	font-family: 'Courier New', Courier, monospace;
+	height: 26px;
+	cursor: pointer;
+	border-radius: 3px;
+	padding: 0px 10px;
+}
+
+input[type="text"], select {
+	background-color: #111;
+	border: 1px solid #444;
+	color: #ddd;
+	height: 26px;
+	padding: 0px 5px;
+	border-radius: 5px;
+	font-family: monospace;
+}
+
+input[type="text"] {
+	width: 300px;
+}
+
+span.counted {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+span.zero, span.err {
+	color: #ff6f2d;
+}
+
+span.one, span.ok {
+	color: #a4ff2d;
+}
+
+span.ignored {
+	color: #666;
+}
