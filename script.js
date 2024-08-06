@@ -90,7 +90,7 @@ const solveEncoding = () => {
 		document.querySelector('#encoding').innerHTML = '';
 		return;
 	}
-	const parity = Number(document.querySelector('#parity_decoding').value);
+	const parity = Number(document.querySelector('#parity_encoding').value);
 	const data = textBits.split('').map(Number);
 	let html = '';
 	html += '<h3>Inclusão dos bits de paridade</h3>';
